@@ -29,7 +29,7 @@
 #include <utility>
 
 namespace amd {
-MonitorBase::~MonitorBase() {}
+//MonitorBase::~MonitorBase() {}
 
 namespace legacy_monitor {
 

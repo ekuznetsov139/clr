@@ -71,8 +71,11 @@ template <class T, class AllocClass = HeapObject> struct SimplyLinkedNode : publ
 
 }  // namespace details
 
+  /*
+
 class MonitorBase {
 public:
+  MonitorBase() {}
   virtual ~MonitorBase() = 0;
   virtual bool tryLock() = 0;
   virtual void lock() = 0;
@@ -81,9 +84,10 @@ public:
   virtual void notify() = 0;
   virtual void notifyAll() = 0;
 };
+  */
 
 namespace legacy_monitor {
-class Monitor final: public HeapObject, public MonitorBase {
+class Monitor: public HeapObject /*, public MonitorBase*/ {
   typedef details::SimplyLinkedNode<Semaphore*, StackObject> LinkedNode;
 
  private:
@@ -168,7 +172,7 @@ class Monitor final: public HeapObject, public MonitorBase {
 } // namespace legacy_monitor
 
 namespace mutex_monitor {
-class Monitor final: public HeapObject, public MonitorBase {
+class Monitor final: public HeapObject /*, public MonitorBase*/ {
  public:
   explicit Monitor(bool recursive = false)
       : recursive_(recursive) {
@@ -240,6 +244,11 @@ class Monitor final: public HeapObject, public MonitorBase {
 } // namespace mutex_monitor
 
 // Monitor API wrapper to user
+class Monitor: public legacy_monitor::Monitor {
+public:
+  explicit Monitor(bool recursive = false) : legacy_monitor::Monitor(recursive) {}
+};
+/*
 class Monitor {
 public:
   explicit Monitor(bool recursive = false) {
@@ -261,7 +270,7 @@ public:
 private:
   MonitorBase* monitor_;
 };
-
+*/
 class ScopedLock : StackObject {
  public:
   ScopedLock(Monitor& lock) : lock_(&lock) { lock_->lock(); }
