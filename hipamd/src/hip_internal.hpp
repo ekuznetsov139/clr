@@ -32,6 +32,7 @@
 #include <thread>
 #include <stack>
 #include <mutex>
+#include <shared_mutex>
 #include <iterator>
 #ifdef _WIN32
 #include <process.h>
@@ -473,7 +474,7 @@ public:
     // Device lock
     amd::Monitor lock_{true};
     // Guards device stream set
-    amd::Monitor streamSetLock{};
+    std::shared_mutex streamSetLock;
     std::unordered_set<hip::Stream*> streamSet;
     /// ROCclr context
     amd::Context* context_;
