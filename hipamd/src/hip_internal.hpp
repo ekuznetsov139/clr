@@ -335,7 +335,6 @@ public:
     Stream(Device* dev, Priority p = Priority::Normal, unsigned int f = 0, bool null_stream = false,
            const std::vector<uint32_t>& cuMask = {},
            hipStreamCaptureStatus captureStatus = hipStreamCaptureStatusNone);
-
     /// Creates the hip stream object, including AMD host queue
     bool Create();
     /// Get device ID associated with the current stream;
@@ -466,7 +465,7 @@ public:
 
     /// The stream should be destroyed via release() rather than delete
     private:
-      ~Stream() {};
+      ~Stream();
   };
 
   /// HIP Device class
